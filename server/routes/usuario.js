@@ -29,6 +29,14 @@ app.get('/usuario', verificaToken, (req, res) => {
                 }
 
                 Usuario.count({estado: true}, (err, conteo) => {
+
+                    if (err) {
+                        return res.status(400).json({
+                            ok: false,
+                            err
+                        });
+                    }
+
                     res.json({
                         ok: true,
                         usuarios,
