@@ -26,7 +26,7 @@ let verificaToken = (req, res, next) => {
 
 
 //===============
-// Verifica Token
+// Verificar si es Administrador
 //===============
 
 let verificaAdmin = (req, res, next) => {
@@ -46,7 +46,30 @@ let verificaAdmin = (req, res, next) => {
 
 };
 
+//===============
+// Verificar Token para Imagen
+//===============
+
+let verificaTokenImg = (req, res, next) => {
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+        if(err){
+            return res.status(401).json({
+                ok: false,
+                err: {
+                    message: 'Token invalido'
+                }
+            });
+        }
+
+        req.usuario = decoded.usuario;
+        next();
+    });
+}
+
 module.exports = {
     verificaToken,
-    verificaAdmin
+    verificaAdmin,
+    verificaTokenImg
 }
